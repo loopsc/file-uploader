@@ -5,9 +5,8 @@ const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcryptjs");
-const usersController = require("./controllers/usersController");
-const messagesController = require("./controllers/messagesController");
-const db = require("./db/queries");
+const prisma = require("./lib/prisma.js");
+const usersController = require("./controllers/usersController.js");
 
 const app = express();
 // EJS
@@ -26,3 +25,25 @@ app.use(passport.session());
 // For serving CSS
 const assetsPath = path.join(__dirname, "public");
 app.use(express.static(assetsPath));
+
+// passport.use(
+//     new LocalStrategy(async (username, password, done) => {
+//     })
+// )
+
+app.get("/", (req, res) => {
+    res.render("index");
+});
+app.get("/login", (req, res) => {
+    res.render("log-in");
+});
+app.get("/signup", (req, res) => {
+    res.render("sign-up");
+});
+app.post("/signup", usersController.createUser);
+
+app.listen(3000, (err) => {
+    if (err) {
+        console.log(err);
+    }
+});
