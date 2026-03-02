@@ -1,4 +1,5 @@
-import { prisma } from "./lib/prisma.js";
+// import { prisma } from "./lib/prisma.js";
+const { prisma } = require("./lib/prisma.js")
 
 async function main() {
   // Create a new user with a post
