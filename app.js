@@ -7,6 +7,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcryptjs");
 const prisma = require("./lib/prisma.js");
 const usersController = require("./controllers/usersController.js");
+const db = require("./db/queries.js");
 
 const app = express();
 // EJS
@@ -26,10 +27,41 @@ app.use(passport.session());
 const assetsPath = path.join(__dirname, "public");
 app.use(express.static(assetsPath));
 
-// passport.use(
-//     new LocalStrategy(async (username, password, done) => {
-//     })
-// )
+passport.use(
+    new LocalStrategy(async (username, password, done) => {
+        try {
+            const user = await db.fetchUser(username);
+            console.log("User logged in: ", user);
+
+            if (!user) {
+                return done(null, false, { message: "Incorrect username" });
+            }
+
+            const match = await bcrypt.compare(password, user.password);
+            if (!match) {
+                return done(null, false, { message: "Incorrect password" });
+            }
+            return done(done, user);
+        } catch (error) {
+            return done(error);
+        }
+    }),
+);
+
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+    try {
+        const user = await db.fetchUser(id);
+        done(null, user);
+    } catch (err) {
+        done(err);
+    }
+});
+
+// Routes
 
 app.get("/", (req, res) => {
     res.render("index");
@@ -37,6 +69,13 @@ app.get("/", (req, res) => {
 app.get("/login", (req, res) => {
     res.render("log-in");
 });
+app.post(
+    "/login",
+    passport.authenticate("local", {
+        successRedirect: "/",
+        failureRedirect: "/",
+    }),
+);
 app.get("/signup", (req, res) => {
     res.render("sign-up");
 });

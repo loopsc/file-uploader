@@ -7,4 +7,8 @@ async function createUser(req, res) {
     res.redirect("/")
 }
 
+async function fetchUser(req, res) {
+    
+}
+
 module.exports = { createUser };
