@@ -12,11 +12,13 @@ async function createUser(username, password) {
 
 async function fetchUser(usernameOrId) {
     try {
+        // Find via username
         if (typeof usernameOrId === "string") {
             const user = await prisma.user.findUnique({
                 where: { username: usernameOrId },
             });
             return user;
+            // Find via id
         } else {
             const user = await prisma.user.findUnique({
                 where: { id: usernameOrId },

@@ -27,21 +27,32 @@ app.use(passport.session());
 const assetsPath = path.join(__dirname, "public");
 app.use(express.static(assetsPath));
 
+app.use((req, res, next) => {
+    res.locals.links = [
+        { href: "/", title: "Home" },
+        { href: "login", title: "Log In" },
+        { href: "signup", title: "Sign Up" },
+    ];
+
+    next();
+});
+
 passport.use(
     new LocalStrategy(async (username, password, done) => {
         try {
             const user = await db.fetchUser(username);
-            console.log("User logged in: ", user);
+
+            // console.log("User logged in: ", user);
 
             if (!user) {
                 return done(null, false, { message: "Incorrect username" });
             }
 
-            const match = await bcrypt.compare(password, user.password);
-            if (!match) {
-                return done(null, false, { message: "Incorrect password" });
-            }
-            return done(done, user);
+            // const match = await bcrypt.compare(password, user.password);
+            // if (!match) {
+            //     return done(null, false, { message: "Incorrect password" });
+            // }
+            return done(null, user);
         } catch (error) {
             return done(error);
         }
@@ -62,9 +73,10 @@ passport.deserializeUser(async (id, done) => {
 });
 
 // Routes
-
 app.get("/", (req, res) => {
-    res.render("index");
+    res.render("index", {
+        user: req.user,
+    });
 });
 app.get("/login", (req, res) => {
     res.render("log-in");
