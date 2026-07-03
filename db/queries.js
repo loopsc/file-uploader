@@ -10,25 +10,26 @@ async function createUser(username, password) {
     return user;
 }
 
-async function fetchUser(usernameOrId) {
+async function fetchUserByUsername(username) {
     try {
-        // Find via username
-        if (typeof usernameOrId === "string") {
-            const user = await prisma.user.findUnique({
-                where: { username: usernameOrId },
-            });
-            return user;
-            // Find via id
-        } else {
-            const user = await prisma.user.findUnique({
-                where: { id: usernameOrId },
-            });
-            return user;
-        }
+        const user = await prisma.user.findUnique({
+            where: { username: username },
+        });
+        return user;
     } catch (error) {
-        console.log("Issue with type of identifier");
-        console.log(error);
+        console.log("Received error: ", err);
     }
 }
 
-module.exports = { createUser, fetchUser };
+async function fetchUserById(id) {
+    try {
+        const user = await prisma.user.findUnique({
+            where: { id: id },
+        });
+        return user;
+    } catch (err) {
+        console.log("Received error: ", err);
+    }
+}
+
+module.exports = { createUser, fetchUserByUsername, fetchUserById };

@@ -1,22 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>Fileup</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/navbar.css">
 </head>
 
 <body>
     <%- include('./partials/navbar.ejs') %>
-        <h1>Home</h1>
-        <% if (user) { %>
-            <h2>Hello <%= user.username %>
-            </h2>
+        <main>
+            <div class="hero">
+                <h1>Your files, organised.</h1>
+                <p>Upload, manage, and share files from one place.</p>
+                <div class="hero-btns">
+                    <% if (user) { %>
+                        <a href="/folders" class="btn-primary">Go to folders</a>
+                        <% } else { %>
+                            <button>
+                                <a href="/signup" class="btn-primary">Get started</a>
 
-            <form action="/upload-file" method="post" enctype="multipart/form-data">
-                <input type="file" name="file">
-            </form>
-            <% } %>
+                            </button>
+                            <button>
+                                <a href="/login" class="btn-secondary">Log in</a>
+
+                            </button>
+                            <% } %>
+                </div>
+            </div>
+        </main>
 </body>
 
 </html>

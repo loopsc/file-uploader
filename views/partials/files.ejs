@@ -1,0 +1,20 @@
+<!-- Display all files inside a single folder -->
+<div class="container">
+    <h1>
+        <%= folder.name%>
+    </h1>
+    <% files.forEach(file=> { %>
+        <div class="file">
+            <p>
+                <%= file.name %>
+            </p>
+            <p>
+                <%= file.size %>
+            </p>
+            <p>
+                <%= file.uploadedAt %>
+            </p>
+            <button class="btn-download">Download</button>
+        </div>
+        <% }); %>
+</div>

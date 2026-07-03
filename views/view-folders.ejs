@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        Workspace
+    </title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/navbar.css">
+</head>
+
+<body>
+    <%- include("./partials/navbar.ejs") %>
+        <main>
+            <% folders.forEach(folder=> { %>
+                <%- include("./partials/folder.ejs", {folder: folder})%>
+                    <% }); %>
+        </main>
+</body>
+
+</html>
