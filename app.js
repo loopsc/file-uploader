@@ -50,11 +50,20 @@ app.use(
 );
 app.use(passport.session());
 app.use((req, res, next) => {
-    res.locals.links = [
-        { href: "/", title: "Home" },
-        { href: "login", title: "Log In" },
-        { href: "signup", title: "Sign Up" },
-    ];
+    if (req.user) {
+        res.locals.links = [
+            { href: "/folders", title: "View Folders" },
+            { href: "/folders/create-folder", title: "New Folder" },
+            { href: "/signout", title: "Sign Out" },
+        ];
+    } else {
+        res.locals.links = [
+            { href: "/", title: "Home" },
+            { href: "/login", title: "Log In" },
+            { href: "/signup", title: "Sign Up" },
+        ];
+    }
+
     next();
 });
 

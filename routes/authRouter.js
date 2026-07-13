@@ -27,4 +27,8 @@ authRouter.get("/signup", (req, res) => {
 
 authRouter.post("/signup", usersController.createUser);
 
+authRouter.get("/signout", (req, res) => {
+    usersController.signout(req, res);
+});
+
 module.exports = authRouter;

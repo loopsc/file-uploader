@@ -1,4 +1,5 @@
 const { prisma } = require("../lib/prisma.js");
+console.log(prisma);
 
 async function createUser(username, password) {
     const user = await prisma.user.create({
@@ -32,4 +33,30 @@ async function fetchUserById(id) {
     }
 }
 
-module.exports = { createUser, fetchUserByUsername, fetchUserById };
+async function fetchAllFolders(id) {
+    const folders = await prisma.folder.findMany({
+        where: { userId: id },
+    });
+    console.log(folders);
+    // return [{ name: "test", size: 20, uploadedAt: "today" }];
+    return folders;
+}
+
+async function createFolder(name, userId) {
+    const folder = await prisma.folder.create({
+        data: {
+            name: name,
+            userId: userId,
+        },
+    });
+
+    return folder;
+}
+
+module.exports = {
+    createUser,
+    fetchUserByUsername,
+    fetchUserById,
+    createFolder,
+    fetchAllFolders,
+};

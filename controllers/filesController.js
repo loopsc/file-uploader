@@ -8,11 +8,15 @@ async function getFolder() {
     return { name: "This is My Folder Name" };
 }
 
-async function getAllFolders() {
-    return [
-        { name: "Folder1", size: "10TB", uploadedAt: "today" },
-        { name: "Folder2", size: "100TB", uploadedAt: "tomorrow" },
-    ];
+async function getAllFolders(req, res) {
+    const folders = await db.fetchAllFolders(req.user.id);
+    return folders;
 }
 
-module.exports = { getFiles, getFolder, getAllFolders };
+async function createFolder(req, res) {
+    const name = req.body["folder-name"];
+    const folder = await db.createFolder(name, req.user.id);
+    res.redirect("/folders");
+}
+
+module.exports = { getFiles, getFolder, getAllFolders, createFolder };
