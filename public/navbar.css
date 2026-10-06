@@ -7,7 +7,7 @@ nav {
 ul {
     list-style: none;
     text-decoration: none;
-    color: var(--text);
+    color: inherit;
     display: flex;
     justify-content: space-around;
 }
@@ -33,7 +33,6 @@ ul {
 }
 
 .navbar > ul {
-    background-color: rgba(0, 0, 0, 0.2);
 }
 
 li .nav-link::after {

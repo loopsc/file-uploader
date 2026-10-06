@@ -5,6 +5,12 @@
         <p>
             <%= folder.name %>
         </p>
-        <button class="btn-view">View</button>
+        <div class="buttons-list">
+            <a href="/folders/<%= folder.id %>" class="button">View</a>
+            <form action="/folders/<%= folder.id %>/delete" method="POST">
+                <button type="submit">Delete</button>
+            </form>
+        </div>
+
     </div>
 </div>

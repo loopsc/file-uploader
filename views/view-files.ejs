@@ -1,17 +1,30 @@
+<!-- We receive the following objects from the router: files, folder -->
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 
 <head>
     <meta charset="UTF-8">
-    <title><%= folder.name %></title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="navbar.css">
+    <title>
+        <%= folder.name %>
+    </title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/navbar.css">
 </head>
 
 <body>
     <%- include("./partials/navbar.ejs") %>
         <main>
-            <%- include("./partials/folder.ejs", {files: files, folder: folder} ) %>
+            <header class="folder-header">
+                <h1>
+                    <%= folder.name%>
+                </h1>
+                <form action="/folders/<%= folder.id %>/create" method="POST">
+                    <button type="button"><strong>+</strong> Add File</button>
+
+                </form>
+            </header>
+
+            <%- include("./partials/files.ejs", {files: files} ) %>
         </main>
 </body>
 

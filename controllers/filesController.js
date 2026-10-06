@@ -1,11 +1,12 @@
-const db = require("../db/queries");
+const db = require('../db/queries');
 
 async function getFiles() {
-    return [{ name: "Homework", size: "10TB", uploadedAt: "today" }];
+    return [{ name: 'Homework', size: '10TB', uploadedAt: 'today' }];
 }
 
-async function getFolder() {
-    return { name: "This is My Folder Name" };
+async function getFolder(folderId, userId) {
+    const folder = await db.fetchFolder(folderId, userId);
+    return folder;
 }
 
 async function getAllFolders(req, res) {
@@ -13,10 +14,19 @@ async function getAllFolders(req, res) {
     return folders;
 }
 
-async function createFolder(req, res) {
-    const name = req.body["folder-name"];
-    const folder = await db.createFolder(name, req.user.id);
-    res.redirect("/folders");
+async function createFolder(folderName, userId) {
+    await db.createFolder(folderName, userId);
 }
 
-module.exports = { getFiles, getFolder, getAllFolders, createFolder };
+async function deleteFolder(folderId, userId) {
+    await db.deleteFolder(folderId, userId);
+    console.log('Folder deleted');
+}
+
+module.exports = {
+    getFiles,
+    getFolder,
+    getAllFolders,
+    createFolder,
+    deleteFolder,
+};

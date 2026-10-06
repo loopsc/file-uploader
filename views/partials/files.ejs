@@ -1,8 +1,6 @@
 <!-- Display all files inside a single folder -->
 <div class="container">
-    <h1>
-        <%= folder.name%>
-    </h1>
+
     <% files.forEach(file=> { %>
         <div class="file">
             <p>
@@ -14,7 +12,7 @@
             <p>
                 <%= file.uploadedAt %>
             </p>
-            <button class="btn-download">Download</button>
+            <a href="" class="button">Download</a>
         </div>
         <% }); %>
 </div>

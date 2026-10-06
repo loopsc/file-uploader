@@ -1,4 +1,4 @@
-const { prisma } = require("../lib/prisma.js");
+const { prisma } = require('../lib/prisma.js');
 console.log(prisma);
 
 async function createUser(username, password) {
@@ -18,7 +18,7 @@ async function fetchUserByUsername(username) {
         });
         return user;
     } catch (error) {
-        console.log("Received error: ", err);
+        console.log('Received error: ', err);
     }
 }
 
@@ -29,13 +29,21 @@ async function fetchUserById(id) {
         });
         return user;
     } catch (err) {
-        console.log("Received error: ", err);
+        console.log('Received error: ', err);
     }
 }
 
-async function fetchAllFolders(id) {
+async function fetchFolder(folderId, userId) {
+    const folder = await prisma.folder.findFirst({
+        where: { id: folderId, userId },
+    });
+
+    return folder;
+}
+
+async function fetchAllFolders(userId) {
     const folders = await prisma.folder.findMany({
-        where: { userId: id },
+        where: { userId: userId },
     });
     console.log(folders);
     // return [{ name: "test", size: 20, uploadedAt: "today" }];
@@ -53,10 +61,18 @@ async function createFolder(name, userId) {
     return folder;
 }
 
+async function deleteFolder(folderId, userId) {
+    await prisma.folder.delete({
+        where: { id: folderId, userId },
+    });
+}
+
 module.exports = {
     createUser,
     fetchUserByUsername,
     fetchUserById,
     createFolder,
+    fetchFolder,
     fetchAllFolders,
+    deleteFolder,
 };
