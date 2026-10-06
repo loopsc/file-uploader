@@ -1,18 +1,35 @@
 <!-- Display all files inside a single folder -->
-<div class="container">
+<div class="container files-list">
 
-    <% files.forEach(file=> { %>
-        <div class="file">
-            <p>
-                <%= file.name %>
-            </p>
-            <p>
-                <%= file.size %>
-            </p>
-            <p>
-                <%= file.uploadedAt %>
-            </p>
-            <a href="" class="button">Download</a>
+    <% if (files.length) { %>
+        <div class="file-headings">
+            <span>Name</span>
+            <span>Size</span>
+            <span>Uploaded</span>
+            <span></span>
         </div>
-        <% }); %>
+        <% } %>
+
+            <% files.forEach(file=> { %>
+                <div class="file">
+                    <p>
+                        <%= file.name %>
+                    </p>
+                    <p>
+                        <%= file.size %> bytes
+                    </p>
+                    <p>
+                        <%= file.uploadedAt.toLocaleDateString("en-GB", { day: "2-digit" , month: "2-digit" ,
+                            year: "2-digit" }) %>
+                    </p>
+                    <div class="buttons-list">
+                        <a href="" class="button">Download</a>
+                        <form action="/folders/<%= file.folderId %>/<%= file.id %>/delete" method="POST">
+                            <button class="danger" type="submit">Delete</button>
+                        </form>
+                    </div>
+
+
+                </div>
+                <% }); %>
 </div>

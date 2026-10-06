@@ -34,8 +34,13 @@ async function fetchUserById(id) {
 }
 
 async function fetchFolder(folderId, userId) {
+    // const folder = await prisma.folder.findFirst({
+    //     where: { id: folderId, userId },
+    // });
+
     const folder = await prisma.folder.findFirst({
         where: { id: folderId, userId },
+        include: { files: true },
     });
 
     return folder;
@@ -67,6 +72,32 @@ async function deleteFolder(folderId, userId) {
     });
 }
 
+async function createFile({ filename, url, size, folderId }) {
+    await prisma.file.create({
+        data: {
+            name: filename,
+            url: url,
+            size: size,
+            folderId: folderId,
+        },
+    });
+}
+
+async function fetchAllFiles(folderId, userId) {
+    const filesArr = await prisma.file.findMany({
+        where: { folderId, folder: { userId } },
+    });
+    return filesArr;
+}
+
+async function deleteFile(fileId, userId) {
+    const file = await prisma.file.delete({
+        where: { id: fileId, folder: { userId } },
+    });
+
+    return file;
+}
+
 module.exports = {
     createUser,
     fetchUserByUsername,
@@ -75,4 +106,7 @@ module.exports = {
     fetchFolder,
     fetchAllFolders,
     deleteFolder,
+    createFile,
+    fetchAllFiles,
+    deleteFile,
 };

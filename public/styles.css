@@ -37,9 +37,13 @@ a:hover {
 }
 
 main {
-    max-width: 720px;
-    margin: 0 auto;
+    max-width: 50%;
+    /* margin: 0 auto; */
     padding: 2rem 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    margin: 32px auto;
 }
 
 h1 {
@@ -79,6 +83,22 @@ button {
     background: transparent;
     color: var(--text);
     cursor: pointer;
+}
+
+@keyframes flash-red {
+    0%, 100% {
+        background: transparent;
+        border-color: var(--border);
+    }
+    50% {
+        background-color: rgb(158, 28, 28);
+
+    }
+}
+
+.danger:hover {
+    animation: flash-red 0.8s ease-in-out infinite;
+    /* color: #dc2626; */
 }
 
 button:hover {
@@ -128,6 +148,14 @@ header {
     padding: 2rem 0rem;
 }
 
+header form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+}
+
 .buttons-list {
     display: flex;
     gap: 5px;
@@ -138,4 +166,44 @@ form{
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
+}
+
+input[type="file"] {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+input[type="file"]::file-selector-button {
+    font-size: 13px;
+    padding: 6px 14px;
+    margin-right: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background: var(--surface);
+    border-color: var(--text-muted);
+}
+
+.files-list .file,
+.files-list .file-headings {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 16px;
+    align-items: center;
+}
+
+.file p {
+    margin: 0;
+}
+
+.file-headings {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
