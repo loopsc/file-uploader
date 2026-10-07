@@ -1,14 +1,17 @@
 const db = require('../db/queries');
 
-async function getFiles(folderId, userId) {
-    // return [{ name: 'Homework', size: '10TB', uploadedAt: 'today' }];
+async function getFile(fileId, userId) {
+    const file = await db.fetchFile(fileId, userId);
+    return file;
+}
 
+async function getFiles(folderId, userId) {
     const files = await db.fetchAllFiles(folderId, userId);
     return files;
 }
 
-async function getFolder(folderId, userId) {
-    const folder = await db.fetchFolder(folderId, userId);
+async function getFolderAndFiles(folderId, userId) {
+    const folder = await db.fetchFolderAndFiles(folderId, userId);
     return folder;
 }
 
@@ -43,8 +46,9 @@ async function deleteFile(fileId, userId) {
 }
 
 module.exports = {
+    getFile,
     getFiles,
-    getFolder,
+    getFolderAndFiles,
     getAllFolders,
     createFolder,
     deleteFolder,

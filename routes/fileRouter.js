@@ -29,7 +29,7 @@ fileRouter.get('/:folderId', async (req, res) => {
     const userId = req.user.id;
 
     // const files = await filesController.getFiles(folderId, userId);
-    const folder = await filesController.getFolder(folderId, userId);
+    const folder = await filesController.getFolderAndFiles(folderId, userId);
     const files = folder.files;
 
     res.render('view-files', { files, folder });
@@ -76,6 +76,21 @@ fileRouter.post('/:folderId/:fileId/delete', async (req, res) => {
         res.redirect(`/folders/${deleted.folderId}`);
     } catch (err) {
         console.log(`Could not remove file from disk: ${err}`);
+    }
+});
+
+fileRouter.get('/:folderId/:fileId/download', async (req, res) => {
+    const fileId = Number(req.params.fileId);
+    const userId = req.user.id;
+
+    try {
+        const download = await filesController.getFile(fileId, userId);
+
+        res.download(download.url, download.name, (err) => {
+            console.log(err);
+        });
+    } catch (err) {
+        console.log(`Could not download file: ${err}`);
     }
 });
 

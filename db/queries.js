@@ -12,32 +12,28 @@ async function createUser(username, password) {
 }
 
 async function fetchUserByUsername(username) {
-    try {
-        const user = await prisma.user.findUnique({
-            where: { username: username },
-        });
-        return user;
-    } catch (error) {
-        console.log('Received error: ', err);
-    }
+    const user = await prisma.user.findUnique({
+        where: { username: username },
+    });
+    return user;
 }
 
 async function fetchUserById(id) {
-    try {
-        const user = await prisma.user.findUnique({
-            where: { id: id },
-        });
-        return user;
-    } catch (err) {
-        console.log('Received error: ', err);
-    }
+    const user = await prisma.user.findUnique({
+        where: { id: id },
+    });
+    return user;
 }
 
 async function fetchFolder(folderId, userId) {
-    // const folder = await prisma.folder.findFirst({
-    //     where: { id: folderId, userId },
-    // });
+    const folder = await prisma.folder.findFirst({
+        where: { id: folderId, userId },
+    });
 
+    return folder;
+}
+
+async function fetchFolderAndFiles(folderId, userId) {
     const folder = await prisma.folder.findFirst({
         where: { id: folderId, userId },
         include: { files: true },
@@ -83,12 +79,24 @@ async function createFile({ filename, url, size, folderId }) {
     });
 }
 
+async function fetchFile(fileId, userId) {
+    const file = await prisma.file.findFirstOrThrow({
+        where: {
+            id: fileId,
+            folder: { userId: userId },
+        },
+    });
+
+    return file;
+}
+
 async function fetchAllFiles(folderId, userId) {
     const filesArr = await prisma.file.findMany({
         where: { folderId, folder: { userId } },
     });
     return filesArr;
 }
+
 
 async function deleteFile(fileId, userId) {
     const file = await prisma.file.delete({
@@ -104,9 +112,11 @@ module.exports = {
     fetchUserById,
     createFolder,
     fetchFolder,
+    fetchFolderAndFiles,
     fetchAllFolders,
     deleteFolder,
     createFile,
+    fetchFile,
     fetchAllFiles,
     deleteFile,
 };
